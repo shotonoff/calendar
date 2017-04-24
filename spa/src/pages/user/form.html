@@ -1,0 +1,25 @@
+<div style="width: 400px; margin: 0 auto;">
+    <form name="userForm">
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input id="username" class="form-control" type="text" ng-model="user.username" disabled/>
+        </div>
+        <div class="form-group">
+            <label for="username">Email</label>
+            <input id="email" class="form-control" type="text" ng-model="user.email" disabled/>
+        </div>
+        <div class="form-group">
+            <label for="active">Active</label>
+            <input id="active" type="checkbox" ng-model="user.active"/>
+        </div>
+        <div class="form-group">
+            <label>Created At: </label><span>{[{user.createdAt}]}</span>
+        </div>
+        <div class="form-group" ng-if="user.roles.length > 0">
+            <label >Roles: </label><span ng-repeat="role in user.roles" class="label label-primary">{[{codeToStr(role)}]}</span>
+        </div>
+        <div>
+            <button type="button" class="btn btn-primary" ng-click="submit(userForm)">Save</button>
+        </div>
+    </form>
+</div>
