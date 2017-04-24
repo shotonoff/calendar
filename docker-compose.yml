@@ -1,0 +1,59 @@
+version: "2"
+
+#######################################
+# project_name: aulinks-test-task #
+#######################################
+
+services:
+  php:
+    build:
+      context: docker/php
+    image: aulinks-php:7
+    container_name: aulinks-php
+    depends_on:
+      - mysql
+    environment:
+      XDEBUG_CONFIG: "${XDEBUG_CONFIG}"
+      PHP_IDE_CONFIG: serverName=aulinks.local
+    volumes:
+      - .:${PWD}
+
+  nginx:
+    image: nginx:1
+    container_name: aulinks-nginx
+    depends_on:
+      - php
+    volumes:
+      - .:${PWD}
+      - ./docker/nginx/default.tpl:/etc/nginx/conf.d/default.tpl
+    networks:
+      default:
+        aliases:
+          - aulinks.local
+    environment:
+      NGINX_AULINKS_PROJECT_PATH: ${PWD}
+    ports:
+      - ${DOCKER_NGINX_EXTERNAL_PORT}:80
+    command: /bin/bash -c "envsubst '$${NGINX_AULINKS_PROJECT_PATH}' < /etc/nginx/conf.d/default.tpl > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
+
+  mysql:
+    image: mariadb
+    container_name: aulinks-mysql
+    volumes:
+      - mysql:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: aulinks_db
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: aulinks
+      MYSQL_PASSWORD: aulinks
+
+volumes:
+  mysql:
+    driver: local
+  redis:
+    driver: local
+
+networks:
+  default:
+    external:
+      name: aulinks

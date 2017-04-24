@@ -1,0 +1,10 @@
+.idea
+.env
+bower_components
+node_modules
+/public/*
+!/public/index.php
+/vendor/*
+/cache/*
+/logs/*
+/app/spool
