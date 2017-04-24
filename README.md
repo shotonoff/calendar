@@ -43,7 +43,6 @@ This application demonstrate my skills. I tried to cover full stack technologies
     docker pull digitallyseamless/nodejs-bower-grunt:latest
     docker-compose pull mysql nginx
     docker-compose build php
-    docker-compose build nginx
     ```
 
 9. Start project:
@@ -59,7 +58,7 @@ This application demonstrate my skills. I tried to cover full stack technologies
     ```bash
     bin/run npm install
     bin/run bower install
-    bin/run bower bowercopy
+    bin/run grunt bowercopy
     composer install #is expected that composer already have been installed on your system
     ```
 
@@ -70,5 +69,15 @@ This application demonstrate my skills. I tried to cover full stack technologies
         bin/run console user:create admin admin@aulinks.cz --super
     ```
     
-    
+12. Open in your browser `http://aulinks.local/`
 
+13. To send email, you have to run a command manually  
+
+    ```bash
+        bin/run console mailer:send
+    ```
+    
+14. There are two ways, how to register an user  
+    * Open registration page manually `http://aulinks.local/#/aulinks.local/#/registration?token=PUT_HERE_INVITE_TOKEN`
+    * Run a command to send email and click by link
+    
