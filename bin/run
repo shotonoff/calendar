@@ -41,6 +41,7 @@ usage() {
 echo "Usage
     --help  Help information
     console
+    composer
     doctrine
     migration
     bower
@@ -147,6 +148,9 @@ case "$1" in
     usage
     exit 0
     ;;
+    composer)
+    run composer "${@:2}"
+    ;;
     npm)
         docker run -it \
         -v "${PROJECT_DIR}":"${PROJECT_DIR}" \
@@ -187,9 +191,6 @@ case "$1" in
     phpunit)
         PHPUNIT_ARGS="-c ./phpunit.xml ${@:2}"
         run ./vendor/bin/phpunit $PHPUNIT_ARGS
-    ;;
-    phpstan)
-        run ./bin/phpstan "${@:2}"
     ;;
     phpdoccheck)
         run ./bin/phpdoccheck "${@:2}"

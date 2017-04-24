@@ -65,7 +65,7 @@ This application demonstrate my skills. I tried to cover full stack technologies
     bin/run npm install
     bin/run bower install
     bin/run grunt bowercopy
-    composer install #is expected that composer already have been installed on your system
+    bin/run composer install
     ```
 
 11. Prepare data: 
