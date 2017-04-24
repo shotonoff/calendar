@@ -34,7 +34,7 @@ This application demonstrate my skills. I tried to cover full stack technologies
    if you you are OSX
     
     ```bash
-    sudo sh -c 'echo "\n192.168.99.100 aulinks.local" | sudo cat >> /etc/hosts'
+    sudo sh -c 'echo "\n192.168.99.100 aulinks.local" | cat >> /etc/hosts'
     ```
    
 7. Create docker network:
