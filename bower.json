@@ -6,6 +6,7 @@
     "angular-route": "1.5.8",
     "angular-jwt": "0.1.9",
     "bootstrap": "3.3.5",
-    "eonasdan-bootstrap-datetimepicker": "^4.17.47"
+    "eonasdan-bootstrap-datetimepicker": "^4.17.47",
+    "fullcalendar": "^3.3.1"
   }
 }
