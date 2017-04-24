@@ -3,6 +3,7 @@
 namespace Aulinks\Controller;
 
 use Aulinks\CQRS\InviteCreateCommand;
+use Aulinks\DTO\InviteRequestDTO;
 use Aulinks\DTO\InviteResponseDTO;
 use Aulinks\Hydrator\CollectionHydrator;
 use Aulinks\Hydrator\InviteRequestHydrator;
@@ -65,7 +66,9 @@ class InviteController
      */
     public function postInviteCreateAction(Request $request, Response $response)
     {
-        $this->commandBus->handle(new InviteCreateCommand(['data' => $request->getParsedBody()]));
+        $inviteDTO = $this->serializer->deserialize((string)$request->getBody(), InviteRequestDTO::class, 'json');
+        $this->commandBus->handle(new InviteCreateCommand(['inviteDTO' => $inviteDTO]));
+        return $response->withStatus(201);
     }
 
     /**

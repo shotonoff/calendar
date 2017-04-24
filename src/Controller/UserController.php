@@ -4,6 +4,8 @@ namespace Aulinks\Controller;
 
 use Aulinks\CQRS\UserCreateCommand;
 use Aulinks\CQRS\UserUpdateCommand;
+use Aulinks\DTO\UserRequestDTO;
+use Aulinks\DTO\UserRequestUpdateDTO;
 use Aulinks\DTO\UserResponseDTO;
 use Aulinks\Hydrator\CollectionHydrator;
 use Aulinks\Hydrator\UserResponseDTOHydrator;
@@ -59,8 +61,10 @@ class UserController
      */
     public function postUserCreateAction(Request $request, Response $response)
     {
+        $dto = $this->serializer->deserialize((string)$request->getBody(), UserRequestDTO::class, 'json');
         $this->commandBus->handle(new UserCreateCommand([
-            'data' => $request->getParsedBody()
+            'userDTO' => $dto,
+            'inviteCheckSkip' => false,
         ]));
         return $response->withStatus(201);
     }
@@ -68,6 +72,7 @@ class UserController
     /**
      * @param Request $request
      * @param Response $response
+     * @return Response
      */
     public function getUsersAction(Request $request, Response $response)
     {
@@ -83,12 +88,14 @@ class UserController
         $response->getBody()->write(
             $this->serializer->serialize($hydrator->getHydratedResult(), 'json')
         );
+        return $response->withStatus(200);
     }
 
     /**
      * @param Request $request
      * @param Response $response
      * @param int $id
+     * @return Response
      */
     public function getUserAction(Request $request, Response $response, $id)
     {
@@ -98,6 +105,7 @@ class UserController
         $response->getBody()->write(
             $this->serializer->serialize($dto, 'json')
         );
+        return $response->withStatus(200);
     }
 
     /**
@@ -107,9 +115,10 @@ class UserController
      */
     public function putUserUpdateAction(Request $request, Response $response)
     {
+        $userDTO = $this->serializer->deserialize((string)$request->getBody(), UserRequestUpdateDTO::class, 'json');
         $this->commandBus->handle(new UserUpdateCommand([
-            'data' => $request->getParsedBody()
+            'userDTO' => $userDTO
         ]));
-        return $response->withStatus(201);
+        return $response->withStatus(200);
     }
 }

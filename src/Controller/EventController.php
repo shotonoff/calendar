@@ -41,6 +41,9 @@ class EventController
     /** @var EventResponseHydrator */
     private $dtoHydrator;
 
+    /** @var Serializer */
+    private $serializer;
+
     /**
      * EventController constructor.
      * @param DirectCommandBus $commandBus
@@ -74,7 +77,9 @@ class EventController
         if ($request->getAttribute('has_errors')) {
             return $response->withStatus(400, ['error' => $request->getAttribute('errors')]);
         }
-        $this->commandBus->handle(new EventCreateCommand(['data' => $request->getParsedBody()]));
+        $eventDTO = $this->serializer->deserialize((string)$request->getBody(), EventDTO::class, 'json');
+        $this->commandBus->handle(new EventCreateCommand(['eventDTO' => $eventDTO]));
+        return $response->withStatus(200);
     }
 
     /**
@@ -85,10 +90,11 @@ class EventController
      */
     public function patchChangeDateAction(Request $request, Response $response, $id)
     {
+        $eventDTO = $this->serializer->deserialize((string)$request->getBody(), EventDTO::class, 'json');
         $this->commandBus->handle(new EventPartUpdateCommand([
             'id' => $id,
             'userId' => $this->userProvider->getToken()->getUser()->getId(),
-            'data' => $request->getParsedBody()
+            'eventDTO' => $eventDTO
         ]));
         return $response->withStatus(200);
     }
