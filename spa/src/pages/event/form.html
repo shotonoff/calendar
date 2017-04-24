@@ -1,0 +1,74 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <alerts values="alerts"></alerts>
+            <div class="well well-sm">
+                <form name="eventForm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="alert alert-danger" role="alert" ng-show="eventForm.name.$error.minlength">
+                                    <span class="error" >Min length 3 symbols</span>
+                                </div>
+                                <label for="name">Name</label>
+                                <input ng-model="event.name"
+                                       name="name"
+                                       type="text"
+                                       class="form-control"
+                                       id="name"
+                                       placeholder="Event name"
+                                       ng-minlength="3"
+                                       required/>
+                            </div>
+                            <div class="form-group">
+                                <label for="date">Choose date:</label>
+                                <div class="input-group">
+                                    <input id="date"
+                                           type="text"
+                                           class="form-control"
+                                           ng-model="event.date"
+                                           data-date-time-picker
+                                    />
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="color">Choose color</label>
+                                <input color-picker type="text" id="color" ng-model="event.colorHex">
+                            </div>
+                            <div class="form-group">
+                                <label for="status">Choose status</label>
+                                <select ng-model="event.status" ng-options="status.code as status.label for status in statuses" id="status">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="name">
+                                    Description</label>
+                                <textarea name="description" id="description" class="form-control" rows="9" cols="25"
+                                          required="required"
+                                          placeholder="Description" ng-model="event.description"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <button ng-show="allowDelete()" type="button" class="btn btn-danger pull-right" ng-click="deleteEvent()">
+                                Delete Event
+                            </button>
+                            <button type="button"
+                                    class="btn btn-primary pull-right"
+                                    ng-disabled="eventForm.$invalid"
+                                    ng-click="submit(eventForm)">
+                                Save Event
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-4">
+
+        </div>
+    </div>
+</div>
