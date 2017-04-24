@@ -14,7 +14,6 @@ module.exports = function (grunt) {
                     'js/angular-route.js': 'angular-route/angular-route.js',
                     'js/angular-jwt.js': 'angular-jwt/dist/angular-jwt.min.js',
                     'js/moment.js': 'moment/min/moment.min.js',
-                    'js/angular-ui-calendar.js': 'angular-ui-calendar/src/calendar.js',
                     'js/fullcalendar.js': 'fullcalendar/dist/fullcalendar.js',
                     'js/fullcalendar-gcal.js': 'fullcalendar/dist/gcal.js',
                     'js/bootstrap-datetimepicker.js': 'eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
