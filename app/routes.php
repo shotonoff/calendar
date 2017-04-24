@@ -18,15 +18,13 @@ $app->group('/_api/v1/invites', function () {
     $this->get('', [InviteController::class, 'getInvitesAction'])
         ->setArgument('action.permission', ['invite.all', 'invite.list']);
 })
-    ->add($app->getContainer()->get(PermissionChecker::class))
-    ->add(ValidatorCreator::createInviteValidators());
+    ->add($app->getContainer()->get(PermissionChecker::class));
 
 $app->group('/_api/v1/events', function () {
     $this->get('/{id:[0-9]+}', [EventController::class, 'getEventAction'])
         ->setArgument('action.permission', ['event.all', 'event.get']);
     $this->post('', [EventController::class, 'postEventCreateAction'])
-        ->setArgument('action.permission', ['event.create', 'event.all'])
-        ->add(ValidatorCreator::createInviteValidators());
+        ->setArgument('action.permission', ['event.create', 'event.all']);
     $this->patch('/{id:[0-9]+}', [EventController::class, 'patchChangeDateAction'])
         ->setArgument('action.permission', ['event.update', 'event.all']);
     $this->get('', [EventController::class, 'getEventsAction'])
