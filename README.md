@@ -85,5 +85,4 @@ This application demonstrate my skills. I tried to cover full stack technologies
     
 14. There are two ways, how to register an user  
     * Open registration page manually `http://aulinks.local/#/aulinks.local/#/registration?token=PUT_HERE_INVITE_TOKEN`
-    * Run a command to send email and click by link
-    
+    * Run a command to send email and click by link which lead to registration page
