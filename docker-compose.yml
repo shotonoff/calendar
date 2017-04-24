@@ -50,8 +50,6 @@ services:
 volumes:
   mysql:
     driver: local
-  redis:
-    driver: local
 
 networks:
   default:
