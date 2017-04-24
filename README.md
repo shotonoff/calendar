@@ -28,8 +28,14 @@ This application demonstrate my skills. I tried to cover full stack technologies
 6. Add hostname to `/etc/hosts`:
 
    ```bash
-   echo "\n127.0.0.1 aulinks.local" | sudo tee --append /etc/hosts
+   sudo sh -c 'echo "\n127.0.0.1 aulinks.local" | cat >> /etc/hosts'
    ```
+   
+   if you you are OSX
+    
+    ```bash
+    sudo sh -c '"\n192.168.99.100 aulinks.local" | sudo cat >> /etc/hosts'
+    ```
    
 7. Create docker network:
     
