@@ -15,6 +15,8 @@ RUN apt-get install -y libicu-dev
 RUN pecl install intl
 RUN docker-php-ext-install intl
 
+RUN apt-get install sendmail -y
+
 COPY xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
 RUN rm -rf /var/lib/apt/lists/ *
