@@ -3,7 +3,7 @@
   "dependencies": {
     "jquery": "2.1.4",
     "angular": "1.5.8",
-    "angular-route": "1.5.7",
+    "angular-route": "1.5.8",
     "angular-jwt": "0.1.9",
     "bootstrap": "3.3.5",
     "eonasdan-bootstrap-datetimepicker": "^4.17.47"
