@@ -21,7 +21,7 @@ return [
 
     Twig::class => function (ContainerInterface $c) {
         $config = $c->get('config')['twig'];
-        $twig = new Twig($config['template_path'], [ /** @todo set cache dir */ ]
+        $twig = new Twig($config['template_path'], [/** @todo set cache dir */]
         );
         $basePath = rtrim(str_ireplace('index.php', '', $c->get('request')->getUri()->getBasePath()), '/');
         $twig->addExtension(new TwigExtension($c->get('router'), $basePath));
