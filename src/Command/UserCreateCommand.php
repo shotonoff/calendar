@@ -2,6 +2,7 @@
 
 namespace Aulinks\Command;
 
+use Aulinks\DTO\UserRequestDTO;
 use LiteCQRS\Bus\DirectCommandBus;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -38,19 +39,18 @@ class UserCreateCommand extends Command
         $question = new Question('Enter password: ');
         $password = $helper->ask($input, $output, $question);
 
-        $data = [
-            'username' => $input->getArgument('name'),
-            'email' => $input->getArgument('email'),
-            'password' => $password,
-            'confirmPassword' => $password,
-            'inviteToken' => '',
-            'isAdminRole' => $input->getOption('super'),
-        ];
+        $dto = new UserRequestDTO();
+        $dto->setUsername($input->getArgument('name'));
+        $dto->setEmail($input->getArgument('email'));
+        $dto->setInviteToken('');
+        $dto->setAdmin($input->getOption('super'));
+        $dto->setPassword($password);
+        $dto->setConfirmPassword($password);
 
         /** @var DirectCommandBus $commandBus */
         $commandBus = $this->getContainer()->get(DirectCommandBus::class);
         $commandBus->handle(new CQRS\UserCreateCommand([
-            'data' => $data,
+            'userDTO' => $dto,
             'inviteCheckSkip' => false
         ]));
     }

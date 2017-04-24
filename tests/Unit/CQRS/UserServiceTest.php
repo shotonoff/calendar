@@ -34,9 +34,6 @@ class UserServiceTest extends \PHPUnit_Framework_TestCase
             ->shouldReceive('save')->with(User::class)->twice()
             ->getMock();
 
-        $serializer = m::mock(Serializer::class)
-            ->shouldReceive('fromArray')->with(['data'], UserRequestDTO::class)->twice()->andReturn($userDTO)
-            ->getMock();
         $inviteRepo = m::mock(InviteRepository::class)
             ->shouldReceive('find')->with(101)->andReturn($invite)
             ->getMock();
@@ -54,7 +51,7 @@ class UserServiceTest extends \PHPUnit_Framework_TestCase
             ->shouldReceive('send')->with(\Swift_Message::class)->twice()
             ->getMock();
 
-        $service = new UserService($userRepo, $inviteRepo, $serializer, $userHydr, $inviteService, $mailer);
+        $service = new UserService($userRepo, $inviteRepo, $userHydr, $inviteService, $mailer);
         $command = new UserCreateCommand([
             'data' => ['data'],
             'inviteCheckSkip' => false

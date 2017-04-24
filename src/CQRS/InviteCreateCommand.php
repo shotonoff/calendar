@@ -2,6 +2,7 @@
 
 namespace Aulinks\CQRS;
 
+use Aulinks\DTO\InviteRequestDTO;
 use LiteCQRS\DefaultCommand;
 
 /**
@@ -10,6 +11,6 @@ use LiteCQRS\DefaultCommand;
  */
 class InviteCreateCommand extends DefaultCommand
 {
-    /** @var string|array */
-    public $data;
+    /** @var InviteRequestDTO array */
+    public $inviteDTO;
 }

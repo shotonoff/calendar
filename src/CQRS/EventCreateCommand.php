@@ -2,6 +2,7 @@
 
 namespace Aulinks\CQRS;
 
+use Aulinks\DTO\EventDTO;
 use LiteCQRS\DefaultCommand;
 
 /**
@@ -10,8 +11,6 @@ use LiteCQRS\DefaultCommand;
  */
 class EventCreateCommand extends DefaultCommand
 {
-    /**
-     * @var string|array
-     */
-    public $data;
+    /** @var EventDTO */
+    public $eventDTO;
 }

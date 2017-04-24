@@ -2,6 +2,7 @@
 
 namespace Aulinks\CQRS;
 
+use Aulinks\DTO\UserRequestDTO;
 use LiteCQRS\DefaultCommand;
 
 /**
@@ -10,8 +11,8 @@ use LiteCQRS\DefaultCommand;
  */
 class UserCreateCommand extends DefaultCommand
 {
-    /** @var string|array */
-    public $data;
+    /** @var UserRequestDTO */
+    public $userDTO;
 
     /** @var bool */
     public $inviteCheckSkip = false;

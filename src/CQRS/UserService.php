@@ -25,9 +25,6 @@ class UserService
     /** @var InviteRepository */
     private $inviteRepository;
 
-    /** @var Serializer */
-    private $serializer;
-
     /** @var UserHydrator */
     private $hydrator;
 
@@ -38,7 +35,6 @@ class UserService
      * UserService constructor.
      * @param UserRepository $repository
      * @param InviteRepository $inviteRepository
-     * @param Serializer $serializer
      * @param UserHydrator $hydrator
      * @param InviteService $inviteService
      * @param \Swift_Mailer $mailer $inviteService
@@ -46,7 +42,6 @@ class UserService
     public function __construct(
         UserRepository $repository,
         InviteRepository $inviteRepository,
-        Serializer $serializer,
         UserHydrator $hydrator,
         InviteService $inviteService,
         \Swift_Mailer $mailer
@@ -54,7 +49,6 @@ class UserService
     {
         $this->repository = $repository;
         $this->inviteRepository = $inviteRepository;
-        $this->serializer = $serializer;
         $this->hydrator = $hydrator;
         $this->inviteService = $inviteService;
         $this->mailer = $mailer;
@@ -66,12 +60,9 @@ class UserService
      */
     public function userCreate(UserCreateCommand $command)
     {
-        /** @var UserRequestDTO $userDTO */
-        $userDTO = $this->serialize($command->data, UserRequestDTO::class);
         $user = new User();
-
-        if ($command->inviteCheckSkip === true) {
-            $token = $this->inviteService->decode($userDTO->getInviteToken());
+        if ($command->inviteCheckSkip === false) {
+            $token = $this->inviteService->decode($command->userDTO->getInviteToken());
             /** @var Invite $invite */
             $invite = $this->inviteRepository->find((int)$token['id']);
             $this->failedIfInviteInvalid($token, $invite);
@@ -80,7 +71,7 @@ class UserService
         }
 
         $user->setActive(true);
-        $this->hydrator->hydrate($userDTO, $user);
+        $this->hydrator->hydrate($command->userDTO, $user);
         $this->repository->save($user);
 
         $this->successfulRegistration(new SuccessfulRegistrationCommand([
@@ -110,11 +101,9 @@ class UserService
      */
     public function userUpdate(UserUpdateCommand $command)
     {
-        /** @var UserRequestUpdateDTO $userDTO */
-        $userDTO = $this->serialize($command->data, UserRequestUpdateDTO::class);
         /** @var User $user */
-        $user = $this->repository->find($userDTO->getId());
-        $user->setActive($userDTO->isActive());
+        $user = $this->repository->find($command->userDTO->getId());
+        $user->setActive($command->userDTO->isActive());
         $this->repository->save($user);
     }
 
@@ -131,18 +120,5 @@ class UserService
                 sprintf('<div>Congratulation<br> User "%s" was successful created!</div>', $command->username),
                 'text/html');
         $this->mailer->send($mail);
-    }
-
-    /**
-     * @param string|array $data
-     * @param string $class
-     * @return array
-     */
-    private function serialize($data, string $class)
-    {
-        if (is_string($data) || $data instanceof RequestBody) {
-            return $this->serializer->deserialize((string)$data, $class, 'json');
-        }
-        return $this->serializer->fromArray($data, $class);
     }
 }

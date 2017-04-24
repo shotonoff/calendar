@@ -2,6 +2,7 @@
 
 namespace Aulinks\CQRS;
 
+use Aulinks\DTO\UserRequestUpdateDTO;
 use LiteCQRS\DefaultCommand;
 
 /**
@@ -10,6 +11,6 @@ use LiteCQRS\DefaultCommand;
  */
 class UserUpdateCommand extends DefaultCommand
 {
-    /** @var string|array */
-    public $data;
+    /** @var UserRequestUpdateDTO */
+    public $userDTO;
 }

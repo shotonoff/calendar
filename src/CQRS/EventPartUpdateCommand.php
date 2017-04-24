@@ -2,6 +2,7 @@
 
 namespace Aulinks\CQRS;
 
+use Aulinks\DTO\EventDTO;
 use LiteCQRS\DefaultCommand;
 
 /**
@@ -10,18 +11,12 @@ use LiteCQRS\DefaultCommand;
  */
 class EventPartUpdateCommand extends DefaultCommand
 {
-    /**
-     * @var int
-     */
+    /** @var int */
     public $id;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     public $userId;
 
-    /**
-     * @var string|array
-     */
-    public $data;
+    /** @var EventDTO */
+    public $eventDTO;
 }

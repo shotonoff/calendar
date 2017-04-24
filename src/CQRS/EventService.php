@@ -20,9 +20,6 @@ class EventService
     /** @var EventRepository */
     private $repository;
 
-    /** @var Serializer */
-    private $serializer;
-
     /** @var EventHydrator */
     private $hydrator;
 
@@ -32,19 +29,16 @@ class EventService
     /**
      * UserService constructor.
      * @param EventRepository $repository
-     * @param Serializer $serializer
      * @param EventHydrator $hydrator
      * @param UserProvider $userProvider
      */
     public function __construct(
         EventRepository $repository,
-        Serializer $serializer,
         EventHydrator $hydrator,
         UserProvider $userProvider
     )
     {
         $this->repository = $repository;
-        $this->serializer = $serializer;
         $this->hydrator = $hydrator;
         $this->userProvider = $userProvider;
     }
@@ -55,9 +49,7 @@ class EventService
     public function eventCreate(EventCreateCommand $command)
     {
         $event = new Event();
-        /** @var EventDTO $eventDTO */
-        $eventDTO = $this->serialize($command->data);
-        $this->hydrator->hydrate($eventDTO, $event);
+        $this->hydrator->hydrate($command->eventDTO, $event);
         $event->setUser($this->userProvider->getToken()->getUser());
         $this->repository->save($event);
     }
@@ -74,8 +66,7 @@ class EventService
             throw new ForbiddenException();
         }
         $this->failedIfNotOwner($event, $command->userId);
-        $eventDTO = $this->serialize($command->data);
-        $this->hydrator->hydrate($eventDTO, $event);
+        $this->hydrator->hydrate($command->eventDTO, $event);
         $this->repository->save($event);
     }
 
@@ -100,17 +91,5 @@ class EventService
         if ($event->getUser()->getId() !== $userId) {
             throw ForbiddenException::invalidEventOwner();
         }
-    }
-
-    /**
-     * @param string|array $data
-     * @return array
-     */
-    private function serialize($data)
-    {
-        if (is_string($data) || $data instanceof RequestBody) {
-            return $this->serializer->deserialize((string)$data, EventDTO::class, 'json');
-        }
-        return $this->serializer->fromArray($data, EventDTO::class);
     }
 }
