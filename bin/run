@@ -1,0 +1,202 @@
+#!/bin/bash -e
+
+# Update
+if [ -f /usr/local/bin/docker-machine ]; then
+    eval $(docker-machine env)
+fi
+
+# Disable TTY for PHPStorm
+if [ "$XPC_SERVICE_NAME" == "0" ]; then
+    TTY_ARG="-t"
+fi
+
+# Pass env variables to docker container
+AVAILABLE_ENVS="IDE_PHPUNIT_CUSTOM_LOADER IDE_PHPUNIT_PHPUNIT_PHAR IDE_PHPUNIT_VERSION IDE_PHPUNIT_PHPUNIT_INCLUDE"
+ENVS=""
+for VAR_NAME in ${AVAILABLE_ENVS}; do
+    if [ ! -z ${!VAR_NAME} ]; then
+        ENVS="-e $VAR_NAME=${!VAR_NAME} $ENVS"
+    fi
+done
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PROJECT_DIR=$(dirname "$DIR")
+
+source "${PROJECT_DIR}/.env"
+
+if [[ $(uname) == 'Darwin' ]]; then
+    # for docker-toolbox
+    if [ ! -z "$(ifconfig | grep "192.168.99.1")" ];then
+        DOCKER_MACHINE_IP="192.168.99.1"
+    else
+        DOCKER_MACHINE_IP=$(ifconfig | grep "inet " | grep -v 127.0.0.1 | awk '{print $2}' | sed "s/addr://" | head -n 1)
+    fi
+else
+    DOCKER_MACHINE_IP="172.17.0.1"
+fi
+
+IMAGE="aulinks-php:7"
+
+usage() {
+echo "Usage
+    --help  Help information
+    console
+    doctrine
+    migration
+    bower
+    npm
+    grunt
+    phpunit
+    phpstan
+    phpdoccheck
+    mysql (-d)  Run mysql-client. Use '-d' the option to specify a particular database.
+    mysql-import (-d|-p)  Import sql file in mysql database. Use '-d' the option to specify a particular database and '-p' the option to specify path to a file which want to import.
+    "
+}
+
+mysql_usage()
+{
+    echo "Usage
+    -d (optional) Which use a database
+    "
+}
+
+mysql_client() {
+MYSQL_IMAGE="mysql:5.7"
+mysql_exec='exec mysql -h$MYSQL_PORT_3306_TCP_ADDR -P$MYSQL_PORT_3306_TCP_PORT -uroot -p$MYSQL_ENV_MYSQL_ROOT_PASSWORD $MYSQL_DB'
+mysql_env=""
+
+if [ ! -z $IMPORT_PATH ];then
+    mysql_env="-e IMPORT_FILE=$FILENAME -v $IMPORT_PATH:/tmp/import/$FILENAME"
+    mysql_exec="$mysql_exec < /tmp/import/$FILENAME"
+fi
+
+cmd=(
+docker run -it \
+    --net=aulinks \
+    --link="aulinks-mysql:mysql" \
+    --rm \
+    -e MYSQL_PORT_3306_TCP_ADDR="aulinks-mysql" \
+    -e MYSQL_ENV_MYSQL_ROOT_PASSWORD="root" \
+    -e MYSQL_PORT_3306_TCP_PORT="3306" \
+    -e MYSQL_DB="${1}" \
+    $mysql_env \
+    $MYSQL_IMAGE \
+    sh -c "$mysql_exec"
+)
+
+"${cmd[@]}"
+}
+
+mysql_import_check_options()
+{
+    if [ -z $IMPORT_PATH ];then
+        echo "PATH (-p ...) option is required"
+        exit 1
+    fi
+    if [ ! -f $IMPORT_PATH ];then
+        echo "File '$IMPORT_PATH' is not exists"
+        exit 1
+    fi
+}
+
+parse_mysql_options()
+{
+    while getopts "d:p:h" o;
+    do
+        case "$o" in
+            h | help )
+                usage
+                exit 0
+            ;;
+            d)
+                DB=${OPTARG}
+            ;;
+            p)
+                IMPORT_PATH=${OPTARG}
+                FILENAME=`basename $IMPORT_PATH`
+            ;;
+            *)
+                echo "unknown option $1"
+            ;;
+        esac
+    done
+}
+
+run() {
+docker run -it \
+    -v "${PWD}":"${PWD}" \
+    -v "${DIR}":"${DIR}" \
+    -v "${PROJECT_DIR}":"${PROJECT_DIR}" \
+    -v /tmp/:/tmp/ \
+    -v /private:/private \
+    -e "IDE_PHPUNIT_CUSTOM_LOADER=${PROJECT_DIR}/app/autoload.php" \
+    -e "XDEBUG_CONFIG='idekey=PHPSTORM remote_host=${DOCKER_MACHINE_IP} remote_port=9000'" \
+    -w "${PROJECT_DIR}" \
+    ${ENVS} \
+    --net=aulinks \
+    --sig-proxy=true \
+    --pid=host \
+    --rm \
+    "$IMAGE" \
+    "$@"
+}
+
+case "$1" in
+    --help | help)
+    usage
+    exit 0
+    ;;
+    npm)
+        docker run -it \
+        -v "${PROJECT_DIR}":"${PROJECT_DIR}" \
+        -w "${PROJECT_DIR}" \
+         --rm digitallyseamless/nodejs-bower-grunt npm "${@:2}"
+    ;;
+    bower)
+        docker run -it \
+        -v "${PROJECT_DIR}":"${PROJECT_DIR}" \
+        -w "${PROJECT_DIR}" \
+         --rm digitallyseamless/nodejs-bower-grunt bower "${@:2}"
+    ;;
+
+    grunt)
+        docker run -it \
+        -v "${PROJECT_DIR}":"${PROJECT_DIR}" \
+        -w "${PROJECT_DIR}" \
+         --rm digitallyseamless/nodejs-bower-grunt grunt "${@:2}"
+    ;;
+    console)
+        run ./bin/console "${@:2}"
+    ;;
+    doctrine)
+        run ./vendor/bin/doctrine "${@:2}"
+    ;;
+    migration)
+        run ./vendor/bin/doctrine-migrations "${@:2}"
+    ;;
+    mysql)
+        parse_mysql_options `echo "$@" | sed "s/mysql //"`
+        mysql_client "$DB"
+    ;;
+    mysql-import)
+        parse_mysql_options `echo "$@" | sed "s/mysql-import //"`
+        mysql_import_check_options
+        mysql_client "$DB"
+    ;;
+    phpunit)
+        PHPUNIT_ARGS="-c ./phpunit.xml ${@:2}"
+        run ./vendor/bin/phpunit $PHPUNIT_ARGS
+    ;;
+    phpstan)
+        run ./bin/phpstan "${@:2}"
+    ;;
+    phpdoccheck)
+        run ./bin/phpdoccheck "${@:2}"
+    ;;
+    *)
+        echo "Unknown '$1' command"
+        usage
+    exit 1
+    ;;
+esac;

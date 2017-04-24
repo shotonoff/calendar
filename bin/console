@@ -1,0 +1,25 @@
+#!/usr/bin/env php
+<?php
+
+require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/../app/bootstrap.php';
+
+use Aulinks\Console\Application;
+use Aulinks\Command\MailerSpoolCommand;
+use Aulinks\Command\UserCreateCommand;
+
+$dotenv = new Dotenv\Dotenv(__DIR__ . '/../');
+$dotenv->load();
+$dotenv->required(['JWT_SECRET']);
+
+
+$app = new \Aulinks\Slim\Application(
+    require __DIR__ . '/../app/config.php',
+    require __DIR__ . '/../app/dependencies.php'
+);
+
+$application = new Application($app->getContainer(), 'echo', '1.0.0');
+
+$application->add(new MailerSpoolCommand());
+$application->add(new UserCreateCommand());
+$application->run();
