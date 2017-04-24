@@ -6,7 +6,7 @@ This application demonstrate my skills. I tried to cover full stack technologies
 
 ## Install the Application
 
-1. Clone the project [repository](https://git.itim.vn/shotonoff/aulinks)
+1. Clone the project [repository](https://git.itim.vn/shotonoff/calendar)
 2. Copy `.env.example` to `.env`
 3. [Install docker](https://docs.docker.com/engine/installation/)
 4. [Install docker compose](https://docs.docker.com/compose/install/)
