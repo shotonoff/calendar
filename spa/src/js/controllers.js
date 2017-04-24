@@ -192,6 +192,10 @@
 
     app.controller('UserRegistrationCtrl', ['$scope', 'UserRepository', '$routeParams', '$location',
         function ($scope, repository, $routeParams, $location) {
+            alertMixin($scope);
+            if (!$routeParams.token) {
+                $location.path('/login')
+            }
             $scope.user = {
                 token: $routeParams.token
             };
@@ -200,7 +204,7 @@
                     .then(function (resp) {
                         $location.path('/login')
                     }, function (resp) {
-                        console.log(resp);
+                        $scope.addAlert(errorSWW, 'danger')
                     });
             };
         }
@@ -236,7 +240,6 @@
                     $scope.user = resp.data;
                 }, function (resp) {
                     $scope.addAlert(errorSWW, 'danger');
-                    console.log(resp);
                 });
             $scope.submit = function (form) {
                 repository.save($scope.user);
