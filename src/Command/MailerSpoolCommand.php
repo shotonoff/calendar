@@ -30,7 +30,7 @@ class MailerSpoolCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $realTransport = $this->getContainer()->get(\Swift_SmtpTransport::class);
+        $realTransport = $this->getContainer()->get(\Swift_SendmailTransport::class);
         $mailer = $this->getContainer()->get(\Swift_Mailer::class);
         $transport = $mailer->getTransport();
 
