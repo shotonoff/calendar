@@ -53,8 +53,6 @@ This application demonstrate my skills. I tried to cover full stack technologies
 
 9. Start project:
     
-    Copy .env.example to .env
-    
     ```bash
         docker-compose up -d
     ```
