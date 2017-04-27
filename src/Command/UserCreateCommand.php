@@ -51,7 +51,7 @@ class UserCreateCommand extends Command
         $commandBus = $this->getContainer()->get(DirectCommandBus::class);
         $commandBus->handle(new CQRS\UserCreateCommand([
             'userDTO' => $dto,
-            'inviteCheckSkip' => false
+            'inviteCheckSkip' => true
         ]));
     }
 }
