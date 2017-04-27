@@ -43,7 +43,7 @@ services:
     environment:
       NGINX_AULINKS_PROJECT_PATH: ${PWD}
     ports:
-      - ${DOCKER_NGINX_EXTERNAL_PORT}:80
+      - 80:80
     command: /bin/bash -c "envsubst '$${NGINX_AULINKS_PROJECT_PATH}' < /etc/nginx/conf.d/default.tpl > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
 
   mysql:
