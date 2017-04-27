@@ -7,7 +7,7 @@ return [
     'settings.twig.cache_path' => __DIR__ . '/../cache/twig',
 
     'settings.logger.name' => 'slim-app',
-    'settings.logger.path' => __DIR__ . '/../logs/app.log',
+    'settings.logger.path' => getenv('APP_LOG_DIR'). '/app.log',
     'settings.logger.level' => \Monolog\Logger::DEBUG,
 
     'settings.doctrine.meta.entity_path' => [

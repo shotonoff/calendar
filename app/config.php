@@ -8,7 +8,7 @@ return [
         ],
         'logger' => [
             'name' => 'aulinks-app',
-            'path' => __DIR__ . '/../logs/app.log',
+            'path' => getenv('APP_LOG_DIR') . '/app.log',
             'level' => \Monolog\Logger::DEBUG,
         ],
         'doctrine' => [
