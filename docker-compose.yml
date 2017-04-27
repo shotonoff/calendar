@@ -13,8 +13,8 @@ services:
     depends_on:
       - mysql
     environment:
-      XDEBUG_CONFIG: "${XDEBUG_CONFIG}"
       PHP_IDE_CONFIG: serverName=aulinks.local
+      APP_LOG_DIR: /var/log/aulinks
     volumes:
       - .:${PWD}
 
