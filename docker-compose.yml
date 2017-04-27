@@ -17,6 +17,13 @@ services:
       APP_LOG_DIR: /var/log/aulinks
       APP_CACHE_DIR: /var/cache
       APP_SPOOL_DIR: /var/cache/spool
+      JWT_SECRET: secret_password
+      #To use smtp a needed to change swiftmailer transport in src/Command/MailerSpoolCommand.php
+      MAIL_SMTP_HOST: smtp.example.org
+      MAIL_SMTP_PORT: 25
+      MAIL_SMTP_SECURITY: ""
+      MAIL_SMTP_USERNAME: enter_your_username
+      MAIL_SMTP_SECURITY: enter_your_password
     volumes:
       - .:${PWD}
 
