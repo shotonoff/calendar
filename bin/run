@@ -22,8 +22,6 @@ done
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PROJECT_DIR=$(dirname "$DIR")
 
-source "${PROJECT_DIR}/.env"
-
 if [[ $(uname) == 'Darwin' ]]; then
     # for docker-toolbox
     if [ ! -z "$(ifconfig | grep "192.168.99.1")" ];then
@@ -124,7 +122,12 @@ parse_mysql_options()
     done
 }
 
-run() {
+
+run(){
+    docker-compose exec php
+}
+
+run_() {
 docker run -it \
     -v "${PWD}":"${PWD}" \
     -v "${DIR}":"${DIR}" \
@@ -149,7 +152,7 @@ case "$1" in
     exit 0
     ;;
     composer)
-    run composer "${@:2}"
+        run composer "${@:2}"
     ;;
     npm)
         docker run -it \
