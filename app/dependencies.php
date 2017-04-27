@@ -17,8 +17,6 @@ use Monolog\Logger;
 use Aulinks\Security\JwtAuthProcessor;
 use LiteCQRS\Bus\InMemoryEventMessageBus;
 
-$spoolDir = getenv("APP_SPOOL_DIR");
-
 return [
 
     Twig::class => function (ContainerInterface $c) {
@@ -96,8 +94,8 @@ return [
             },
         ]);
     },
-    Swift_FileSpool::class => function () use($spoolDir) {
-        return new \Swift_FileSpool($spoolDir);
+    Swift_FileSpool::class => function () {
+        return new \Swift_FileSpool(getenv("APP_SPOOL_DIR"));
     },
     \Swift_Transport_SpoolTransport::class => function (ContainerInterface $c) {
         return new \Swift_Transport_SpoolTransport(
