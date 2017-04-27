@@ -14,10 +14,6 @@ require __DIR__ . '/../app/bootstrap.php';
 
 session_start();
 
-$dotenv = new Dotenv\Dotenv(__DIR__ . '/../');
-$dotenv->load();
-$dotenv->required(['JWT_SECRET']);
-
 $app = new \Aulinks\Slim\Application(
     require __DIR__ . '/../app/config.php',
     require __DIR__ . '/../app/dependencies.php'
