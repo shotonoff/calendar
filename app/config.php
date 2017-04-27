@@ -1,10 +1,12 @@
 <?php
 
+$cacheDir = getenv("APP_CACHE_DIR");
+
 return [
     'config' => [
         'twig' => [
             'template_path' => __DIR__ . '/../templates',
-            'cache_path' => __DIR__ . '/../cache/twig',
+            'cache_path' => $cacheDir . '/twig',
         ],
         'logger' => [
             'name' => 'aulinks-app',
@@ -17,7 +19,7 @@ return [
                     'src/Entity'
                 ],
                 'auto_generate_proxies' => true,
-                'proxy_dir' => __DIR__ . '/../cache/proxies',
+                'proxy_dir' => $cacheDir . '/proxies',
                 'cache' => null,
             ],
             'connection' => [
