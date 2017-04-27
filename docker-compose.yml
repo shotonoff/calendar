@@ -26,6 +26,7 @@ services:
       MAIL_SMTP_SECURITY: enter_your_password
     volumes:
       - .:${PWD}
+    working_dir: ${PWD}
 
   nginx:
     image: nginx:1
