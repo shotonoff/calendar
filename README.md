@@ -25,7 +25,7 @@ This application demonstrate my skills. I tried to cover full stack technologies
 5. Run build script
     
     ```bash
-    ./build.sh
+    sudo ./build.sh
     ```
     
 6. Open in your browser `http://aulinks.local/`
