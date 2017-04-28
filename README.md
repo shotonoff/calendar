@@ -33,7 +33,13 @@ This application demonstrate my skills. I tried to cover full stack technologies
 7. To send email, you have to run a command manually  
 
     ```bash
-        ./bin/run console mailer:send
+        sudo ./bin/run console mailer:send
+    ```
+
+7. To change an event status, to run a command  
+
+    ```bash
+        sudo ./bin/run console event:status:observer
     ```
 
 ### Conclusion
