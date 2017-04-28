@@ -122,28 +122,8 @@ parse_mysql_options()
     done
 }
 
-
 run(){
-    docker-compose exec php
-}
-
-run_() {
-docker run -it \
-    -v "${PWD}":"${PWD}" \
-    -v "${DIR}":"${DIR}" \
-    -v "${PROJECT_DIR}":"${PROJECT_DIR}" \
-    -v /tmp/:/tmp/ \
-    -v /private:/private \
-    -e "IDE_PHPUNIT_CUSTOM_LOADER=${PROJECT_DIR}/app/autoload.php" \
-    -e "XDEBUG_CONFIG='idekey=PHPSTORM remote_host=${DOCKER_MACHINE_IP} remote_port=9000'" \
-    -w "${PROJECT_DIR}" \
-    ${ENVS} \
-    --net=aulinks \
-    --sig-proxy=true \
-    --pid=host \
-    --rm \
-    "$IMAGE" \
-    "$@"
+    docker-compose exec php "$@"
 }
 
 case "$1" in
