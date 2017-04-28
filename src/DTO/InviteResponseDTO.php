@@ -52,7 +52,7 @@ class InviteResponseDTO
 
     /**
      * @JMS\Type("boolean")
-     * @JMS\SerializedName("expired")
+     * @JMS\SerializedName("active")
      *
      * @var bool
      */
@@ -170,6 +170,6 @@ class InviteResponseDTO
      */
     public function isAvailable(): bool
     {
-        return $this->isExpired() && $this->isActive();
+        return !$this->isExpired() && !$this->isActive();
     }
 }
