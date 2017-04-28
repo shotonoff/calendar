@@ -20,12 +20,13 @@
     bin/run npm install
     bin/run bower install
     bin/run grunt bowercopy
-    bin/run composer install
 
     docker-compose up -d
 
-    sleep 5
+    # Wait for when mysql daemon is started
+    sleep 7
 
+    docker-compose exec php composer install
     docker-compose exec mysql mysql -uroot -proot -e "drop database if exists aulinks_db; create database aulinks_db;"
     docker-compose exec php ./vendor/bin/doctrine-migrations migrations:migrate --no-interaction
     docker-compose exec php ./bin/console user:create admin admin@aulinks.cz --super
