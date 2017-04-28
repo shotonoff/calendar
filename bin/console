@@ -7,6 +7,7 @@ require __DIR__ . '/../app/bootstrap.php';
 use Aulinks\Console\Application;
 use Aulinks\Command\MailerSpoolCommand;
 use Aulinks\Command\UserCreateCommand;
+use Aulinks\Command\EventStatusObserverCommand;
 
 $app = new \Aulinks\Slim\Application(
     require __DIR__ . '/../app/config.php',
@@ -17,4 +18,5 @@ $application = new Application($app->getContainer(), 'echo', '1.0.0');
 
 $application->add(new MailerSpoolCommand());
 $application->add(new UserCreateCommand());
+$application->add(new EventStatusObserverCommand());
 $application->run();
