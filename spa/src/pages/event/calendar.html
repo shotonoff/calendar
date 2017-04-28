@@ -1,7 +1,48 @@
-<alerts values="alerts"></alerts>
-<div>
-    <a class="btn btn-primary" href="#/events/create" ng-if="isGranted('event.all', 'event.create')">Event Create</a>
-</div>
-<div>
-    <div ui-calendar="uiConfig.calendar" class="span8 calendar" ng-model="eventSources"></div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <div>
+                <p>
+                    Create an event on any date! Just click by button below, fill all necessary fields and save.
+                </p>
+                <a style="width:100%;" class="btn btn-primary" href="#/events/create"
+                   ng-if="isGranted('event.all', 'event.create')">
+                    <i class="fa fa-calendar-plus-o" aria-hidden="true"></i> Event Create
+                </a>
+            </div>
+
+            <hr>
+            <div ng-show="isEventShow()">
+                <h3>
+                    {[{event.name}]}
+                    <a href="#/events/{[{event.id}]}/edit" class="btn btn-success">Edit</a>
+                </h3>
+                <div>
+                    <b>Date:</b> {[{event.start}]} - {[{event.end}]}
+                </div>
+                <div>
+                    <b>Status</b>: <span class="badge">{[{statusToString(event.status)}]}</span>
+                </div>
+                <div class="well well-sm">{[{event.description}]}</div>
+                <div>
+                    <div>
+                        {[{event.date}]}
+                    </div>
+                </div>
+
+                <button ng-hide="isCancelled()" type="button" class="btn btn-warning" ng-click="cancelEvent(event)">
+                    Cancel
+                </button>
+            </div>
+            <div ng-hide="isEventShow()">
+                <p class="well well-sm">Click by event on calendar, to see details of event here!</p>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <alerts values="alerts"></alerts>
+            <div>
+                <div ui-calendar="uiConfig.calendar" class="span8 calendar" ng-model="eventSources"></div>
+            </div>
+        </div>
+    </div>
 </div>

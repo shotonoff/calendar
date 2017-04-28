@@ -67,6 +67,7 @@
     app.controller('EventsCalendarCtrl', ['$scope', 'EventRepository', '$location',
         function ($scope, eventRepository, $location) {
             alertMixin($scope);
+            eventBaseController($scope, eventRepository, $location);
             $scope.eventSources = [
                 {
                     events: function (start, end, timezone, callback) {
@@ -86,6 +87,13 @@
                     }
                 }
             ];
+            $scope.event = {};
+            $scope.isEventShow = function () {
+                return $scope.event.id !== undefined;
+            };
+            $scope.isCancelled = function () {
+                return $scope.event.status == 4;
+            };
             $scope.uiConfig = {
                 calendar: {
                     editable: true,
@@ -93,17 +101,36 @@
                         center: 'title',
                     },
                     eventClick: function (e) {
-                        $location.path('/events/' + e.id + '/edit');
+                        if ($scope.event.id == e.id) {
+                            return;
+                        }
+                        eventRepository.get(e.id)
+                            .then(function (resp) {
+                                $scope.event = resp.data;
+                            }, function (resp) {
+
+                            });
                     },
                     eventDrop: function (event) {
-                        eventRepository.changeDate(event.id, event.start)
-                            .then(null, function (resp) {
+                        eventRepository.save({
+                            id: event.id,
+                            start: event.start.format("YYYY-MM-DD hh:mm:ss"),
+                            end: event.end.format("YYYY-MM-DD hh:mm:ss"),
+                        })
+                            .then(function (resp) {
+
+                            }, function (resp) {
                                 console.log(resp);
                             });
+                    },
+                    eventResize: function (event, delta, revertFunc) {
+                        console.log(event)
                     }
                 }
             };
+            $scope.onCancel = function () {
 
+            }
         }]);
 
     function eventBaseController($scope, eventRepository, $location) {
@@ -114,7 +141,23 @@
             {code: 1, label: 'New'},
             {code: 2, label: 'In Progress'},
             {code: 3, label: 'Done'},
+            {code: 4, label: 'Cancelled'},
         ];
+        $scope.statusToString = function (code) {
+            var status = $scope.statuses[code - 1];
+            if(status === undefined) {
+                return '';
+            }
+            return status['label'];
+        };
+        $scope.cancelEvent = function (event) {
+            eventRepository.save({id: event.id, status: 4})
+                .then(function (resp) {
+                    $scope.addAlert('Event ' + event.id + ' has been successful cancelled', 'success')
+                }, function (resp) {
+                    console.log(resp);
+                });
+        };
         $scope.deleteEvent = function () {
             eventRepository.delete($scope.event.id)
                 .then(function (resp) {
@@ -220,14 +263,6 @@
                 console.log(resp)
             })
     }]);
-
-    function userControllerBase($scope, repo) {
-        $scope.submit = function () {
-            repo.save($scope.user).success(function (data) {
-                // move to category/edit
-            });
-        };
-    }
 
     app.controller('UserEditCtrl', ['$scope', 'UserRepository', '$routeParams',
         function ($scope, repository, $routeParams) {
