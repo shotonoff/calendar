@@ -36,6 +36,9 @@ class UserCreateCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $helper = $this->getHelper('question');
+
+        $output->writeln("Username: " . $input->getArgument('name'));
+
         $question = new Question('Enter password: ');
         $password = $helper->ask($input, $output, $question);
 
