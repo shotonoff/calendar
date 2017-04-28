@@ -232,9 +232,14 @@
             })
     }]);
 
-    app.controller('UserRegistrationCtrl', ['$scope', 'UserRepository', '$routeParams', '$location',
-        function ($scope, repository, $routeParams, $location) {
+    app.controller('UserRegistrationCtrl', ['$scope', 'UserRepository', '$routeParams', '$location', 'authManager',
+        function ($scope, repository, $routeParams, $location, authManager) {
             alertMixin($scope);
+            $scope.rigisterFormVis = true;
+            if (authManager.isAuthenticated()) {
+                $scope.addAlert('You have to log out first', 'warning')
+                $scope.rigisterFormVis = false;
+            }
             if (!$routeParams.token) {
                 $location.path('/login')
             }
