@@ -6,7 +6,7 @@ RUN apt-get update
 
 RUN apt-get install git git-core -y
 
-RUN docker-php-ext-install pdo pdo_mysql opcache
+RUN docker-php-ext-install pdo pdo_mysql opcache zip
 
 RUN apt-get install sendmail -y
 
