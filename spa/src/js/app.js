@@ -77,11 +77,6 @@
                     }
                     return $http.get('/_api/v1/events/feed?' + $.param(period));
                 },
-                changeDate: function (id, date) {
-                    return $http.patch('/_api/v1/events/' + id, {
-                        date: date.format("YYYY-MM-DD hh:mm:ss")
-                    });
-                },
                 get: function (id) {
                     return $http.get('/_api/v1/events/' + id);
                 },
