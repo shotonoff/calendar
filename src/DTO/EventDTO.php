@@ -30,11 +30,19 @@ class EventDTO
 
     /**
      * @JMS\Type("DateTimeImmutable<'Y-m-d H:i:s'>")
-     * @JMS\SerializedName("date")
+     * @JMS\SerializedName("start")
      *
      * @var \DateTimeInterface
      */
-    private $date;
+    private $start;
+
+    /**
+     * @JMS\Type("DateTimeImmutable<'Y-m-d H:i:s'>")
+     * @JMS\SerializedName("end")
+     *
+     * @var \DateTimeInterface
+     */
+    private $end;
 
     /**
      * @JMS\Type("string")
@@ -74,22 +82,6 @@ class EventDTO
     public function setName(string $name)
     {
         $this->name = $name;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getDate()
-    {
-        return $this->date;
-    }
-
-    /**
-     * @param mixed $date
-     */
-    public function setDate($date)
-    {
-        $this->date = $date;
     }
 
     /**
@@ -162,5 +154,37 @@ class EventDTO
     public function isNew(): bool
     {
         return $this->id === null;
+    }
+
+    /**
+     * @return \DateTimeInterface
+     */
+    public function getStart()
+    {
+        return $this->start;
+    }
+
+    /**
+     * @param \DateTimeInterface $start
+     */
+    public function setStart($start)
+    {
+        $this->start = $start;
+    }
+
+    /**
+     * @return \DateTimeInterface
+     */
+    public function getEnd()
+    {
+        return $this->end;
+    }
+
+    /**
+     * @param \DateTimeInterface $end
+     */
+    public function setEnd($end)
+    {
+        $this->end = $end;
     }
 }

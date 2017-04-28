@@ -35,7 +35,12 @@ class EventHydrator implements HydratorInterface
             // do nothing
         }
         try {
-            $dto->setDate($data->getDate());
+            $dto->setStart($data->getStart());
+        } catch (\Throwable $e) {
+            // do nothing
+        }
+        try {
+            $dto->setEnd($data->getEnd());
         } catch (\Throwable $e) {
             // do nothing
         }

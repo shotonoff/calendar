@@ -2,6 +2,7 @@
 
 namespace Aulinks\DTO;
 
+use Aulinks\Entity\Event;
 use JMS\Serializer\Annotation as JMS;
 
 /**
@@ -35,6 +36,14 @@ class EventFeedDTO
      * @var \DateTimeInterface
      */
     private $start;
+
+    /**
+     * @JMS\Type("DateTime<'Y-m-d H:i:s'>")
+     * @JMS\SerializedName("end")
+     *
+     * @var \DateTimeInterface
+     */
+    private $end;
 
     /**
      * @JMS\Type("string")
@@ -73,7 +82,11 @@ class EventFeedDTO
      */
     public function getTitle(): string
     {
-        return $this->title;
+        $title = $this->title;
+        if($this->status === Event::STATUS_CANCELLED) {
+            $title .= '. cancelled';
+        }
+        return $title;
     }
 
     /**
@@ -178,5 +191,21 @@ class EventFeedDTO
     public function setAuthor($author)
     {
         $this->author = $author;
+    }
+
+    /**
+     * @return \DateTimeInterface
+     */
+    public function getEnd(): \DateTimeInterface
+    {
+        return $this->end;
+    }
+
+    /**
+     * @param \DateTimeInterface $end
+     */
+    public function setEnd(\DateTimeInterface $end)
+    {
+        $this->end = $end;
     }
 }

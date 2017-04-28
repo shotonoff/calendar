@@ -26,11 +26,17 @@ class EventResponseHydrator implements HydratorInterface
 
         $dto->setId($event->getId());
         $dto->setName($event->getName());
-        $date = $event->getDate();
-        if (!$date instanceof \DateTimeImmutable) {
-            $date = \DateTimeImmutable::createFromMutable($event->getDate());
+        $start = $event->getStart();
+        if (!$start instanceof \DateTimeImmutable) {
+            $start = \DateTimeImmutable::createFromMutable($event->getStart());
         }
-        $dto->setDate($date);
+        $dto->setStart($start);
+
+        $end = $event->getEnd();
+        if (!$end instanceof \DateTimeImmutable) {
+            $end = \DateTimeImmutable::createFromMutable($event->getEnd());
+        }
+        $dto->setEnd($end);
         $dto->setStatus($event->getStatus());
         $dto->setDescription($event->getDescription());
         $dto->setColorHex($event->getColorHex());

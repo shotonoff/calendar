@@ -17,6 +17,7 @@ class Event extends EntityAbstract
     const STATUS_NEW = 1;
     const STATUS_INPROGRESS = 2;
     const STATUS_DONE = 3;
+    const STATUS_CANCELLED = 4;
 
     /**
      * @ORM\Column(name="name", type="string", length=64)
@@ -31,10 +32,16 @@ class Event extends EntityAbstract
     private $createdAt;
 
     /**
-     * @ORM\Column(name="date", type="datetime")
+     * @ORM\Column(name="start", type="datetime")
      * @var \DateTimeInterface
      */
-    private $date;
+    private $start;
+
+    /**
+     * @ORM\Column(name="end", type="datetime")
+     * @var \DateTimeInterface
+     */
+    private $end;
 
     /**
      * @ORM\Column(name="description", type="text", length=2000)
@@ -101,17 +108,17 @@ class Event extends EntityAbstract
     /**
      * @return \DateTimeInterface
      */
-    public function getDate(): \DateTimeInterface
+    public function getStart(): \DateTimeInterface
     {
-        return $this->date;
+        return $this->start;
     }
 
     /**
-     * @param \DateTimeInterface $date
+     * @param \DateTimeInterface $start
      */
-    public function setDate(\DateTimeInterface $date)
+    public function setStart(\DateTimeInterface $start)
     {
-        $this->date = $date;
+        $this->start = $start;
     }
 
     /**
@@ -193,5 +200,21 @@ class Event extends EntityAbstract
     public function setDeleted(bool $deleted)
     {
         $this->deleted = $deleted;
+    }
+
+    /**
+     * @return \DateTimeInterface
+     */
+    public function getEnd(): \DateTimeInterface
+    {
+        return $this->end;
+    }
+
+    /**
+     * @param \DateTimeInterface $end
+     */
+    public function setEnd(\DateTimeInterface $end)
+    {
+        $this->end = $end;
     }
 }

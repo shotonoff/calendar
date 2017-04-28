@@ -38,8 +38,8 @@ class EventPeriodSpecification implements SpecificationInterface
     public function isSatisfiedBy($qb): bool
     {
         $qb
-            ->andWhere($qb->expr()->gte('e.date', ':start'))->setParameter('start', $this->start)
-            ->andWhere($qb->expr()->lte('e.date', ':end'))->setParameter('end', $this->end)
+            ->andWhere($qb->expr()->gte('e.start', ':start'))->setParameter('start', $this->start)
+            ->andWhere($qb->expr()->lte('e.start', ':end'))->setParameter('end', $this->end)
         ;
         return true;
     }

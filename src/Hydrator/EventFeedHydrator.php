@@ -27,7 +27,8 @@ class EventFeedHydrator implements HydratorInterface
 
         $dto->setId($data->getId());
         $dto->setTitle($data->getName());
-        $dto->setStart($data->getDate());
+        $dto->setStart($data->getStart());
+        $dto->setEnd($data->getEnd());
         $dto->setStatus($data->getStatus());
         $dto->setDescription($data->getDescription());
         $dto->setColor($data->getColorHex());
