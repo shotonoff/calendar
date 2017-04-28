@@ -96,3 +96,16 @@ label {
     opacity: 0.6;
     transition: opacity ease 0.5s;
 }
+
+.invite-footer {
+    padding-left:55px;
+    border-top: 1px solid #dddddd;
+    padding-top: 6px;
+}
+.invite-footer span {
+    margin-right: 10px;
+}
+
+.error {
+    color: red;
+}

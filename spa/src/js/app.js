@@ -50,10 +50,6 @@
                     templateUrl: 'pages/user/form.html',
                     controller: 'UserEditCtrl'
                 })
-                .when('/invite/create', {
-                    templateUrl: 'pages/invite/form.html',
-                    controller: 'InviteCreateCtrl'
-                })
                 .when('/invites', {
                     templateUrl: 'pages/invite/list.html',
                     controller: 'InviteListCtrl'

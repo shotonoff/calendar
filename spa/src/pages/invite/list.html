@@ -1,26 +1,57 @@
-<div>
-    <a class="btn btn-primary" href="#/invite/create" ng-if="isGranted('invite.all', 'invite.create')">Invite Create</a>
-</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <form name="inviteForm">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input id="email"
+                           class="form-control"
+                           type="email"
+                           required
+                           name="email"
+                           ng-model="invite.email"
+                           placeholder="Email Address"/>
+                    <div role="alert">
+                        <span class="error" ng-show="inviteForm.email.$error.required">Required!</span>
+                        <span class="error" ng-show="inviteForm.email.$error.email">Not valid email!</span>
+                    </div>
+                </div>
 
-<div>
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Email</th>
-            <th>Token</th>
-            <th>Created</th>
-        </tr>
-        </thead>
-        <tr ng-repeat="invite in invites">
-            <td>
-                {[{invite.email}]}
-            </td>
-            <td>
-                {[{invite.token}]}
-            </td>
-            <td>
-                {[{invite.createdAt}]}
-            </td>
-        </tr>
-    </table>
+                <div class="form-group">
+                    <button type="button" ng-disabled="inviteForm.$invalid" class="btn btn-primary" ng-click="submit()">
+                        Send
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-9">
+            <alerts values="alerts"></alerts>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">Material Design Switch Demos</div>
+
+                <ul class="list-group">
+                    <li class="list-group-item" ng-repeat="invite in invites" ng-class="{'danger': !invite.isAvailable}">
+                        <div style="margin-bottom: 10px;">
+                            <i style="font-size: 50px;" class="fa fa-key" aria-hidden="true"></i> {[{invite.token}]}
+                        </div>
+                        <div class="invite-footer">
+                            <span>
+                                <i class="fa fa-envelope" aria-hidden="true"></i> {[{invite.email}]}
+                            </span>
+                            <span>
+                            <i class="fa fa-clock-o" aria-hidden="true"></i> {[{dateFormat(invite.createdAt)}]}
+                            </span>
+                            <span>
+                                <button class="btn btn-xs btn-primary" ng-click="register(invite)" ng-show="invite.isAvailable">Register</button>
+                            </span>
+                            <span ng-show="invite.isActive ">
+                                <i class=""></i>
+                            </span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>

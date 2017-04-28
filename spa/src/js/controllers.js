@@ -144,7 +144,7 @@
         ];
         $scope.statusToString = function (code) {
             var status = $scope.statuses[code - 1];
-            if(status === undefined) {
+            if (status === undefined) {
                 return '';
             }
             return status['label'];
@@ -207,37 +207,49 @@
             }
         }]);
 
-    app.controller('InviteCreateCtrl', ['$scope', 'InviteRepository',
-        function ($scope, repository) {
+    app.controller('InviteListCtrl', ['$scope', 'InviteRepository', 'AuthService', '$location',
+        function ($scope, repository, authService, $location) {
             alertMixin($scope);
+            $scope.invites = [];
 
             $scope.invite = {};
             $scope.submit = function () {
                 repository.save($scope.invite)
                     .then(function (resp) {
                         $scope.addAlert('Invite was success sent to "' + $scope.invite.email + '"')
+                        fetchEvents();
                     }, function (resp) {
                         console.log(resp);
                     });
-            }
-        }]);
+            };
 
-    app.controller('InviteListCtrl', ['$scope', 'InviteRepository', function ($scope, repository) {
-        $scope.invites = [];
-        repository.all()
-            .then(function (resp) {
-                $scope.invites = resp.data;
-            }, function (resp) {
-                console.log(resp)
-            })
-    }]);
+            $scope.register = function (invite) {
+                authService.logout();
+                $location.path('/registration').search('token', invite.token);
+            };
+
+            $scope.dateFormat = function(date){
+                return moment(date).format("MMMM Do YYYY, h:mm");
+            };
+
+            function fetchEvents() {
+                repository.all()
+                    .then(function (resp) {
+                        $scope.invites = resp.data;
+                    }, function (resp) {
+                        console.log(resp)
+                    })
+            }
+
+            fetchEvents();
+        }]);
 
     app.controller('UserRegistrationCtrl', ['$scope', 'UserRepository', '$routeParams', '$location', 'authManager',
         function ($scope, repository, $routeParams, $location, authManager) {
             alertMixin($scope);
             $scope.rigisterFormVis = true;
             if (authManager.isAuthenticated()) {
-                $scope.addAlert('You have to log out first', 'warning')
+                $scope.addAlert('You have to log out first', 'warning');
                 $scope.rigisterFormVis = false;
             }
             if (!$routeParams.token) {
