@@ -42,7 +42,7 @@ This application demonstrate my skills. I tried to cover full stack technologies
         sudo ./bin/run console event:status:observer
     ```
 
-### Conclusion
+### Some notes
 There are two ways, how to register an user  
 1. Open registration page manually `http://aulinks.local/#/aulinks.local/#/registration?token=PUT_HERE_INVITE_TOKEN`
 2. Run a command to send email and click by link which lead to registration page
