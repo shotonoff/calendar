@@ -12,7 +12,6 @@
     <title>Theme Template for Bootstrap</title>
 
     <link rel="stylesheet" href="/assets/css/bootstrap.css"/>
-    <link rel="stylesheet" href="/assets/css/bootstrap-theme.css"/>
     <link rel="stylesheet" href="/assets/css/fullcalendar.css"/>
     <link rel="stylesheet" href="/assets/css/bootstrap-datetimepicker.css"/>
     <link rel="stylesheet" href="/assets/css/spectrum.css"/>
@@ -45,13 +44,19 @@
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <li>
-                    <a href="#/events" ng-if="isGranted('event.all', 'event.list', 'event.update')">Calendar</a>
+                    <a href="#/events" ng-if="isGranted('event.all', 'event.list', 'event.update')" title="Calendar" >
+                        <i class="fa fa-calendar"></i> Calendar
+                    </a>
                 </li>
                 <li>
-                    <a href="#/users"  ng-if="isGranted('user.all', 'user.list')">Users</a>
+                    <a href="#/users" ng-if="isGranted('user.all', 'user.list')">
+                        <i class="fa fa-user fa-fw"></i> Users
+                    </a>
                 </li>
                 <li>
-                    <a href="#/invites"  ng-if="isGranted('invite.all', 'invite.list')">Invites</a>
+                    <a href="#/invites"  ng-if="isGranted('invite.all', 'invite.list')">
+                        <i class="fa fa-user-plus" aria-hidden="true"></i> Invites
+                    </a>
                 </li>
             </ul>
 

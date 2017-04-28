@@ -9,7 +9,7 @@ module.exports = function (grunt) {
             scripts: {
                 files: {
                     'js/jquery.js': 'jquery/dist/jquery.js',
-                    'js/bootstrap.js': 'bootstrap/dist/js/bootstrap.js',
+                    'js/bootstrap.js': 'bootswatch-dist/js/bootstrap.js',
                     'js/angular.js': 'angular/angular.min.js',
                     'js/angular-route.js': 'angular-route/angular-route.js',
                     'js/angular-jwt.js': 'angular-jwt/dist/angular-jwt.min.js',
@@ -22,8 +22,7 @@ module.exports = function (grunt) {
             },
             stylesheets: {
                 files: {
-                    'css/bootstrap.css': 'bootstrap/dist/css/bootstrap.css',
-                    'css/bootstrap-theme.css': 'bootstrap/dist/css/bootstrap-theme.css',
+                    'css/bootstrap.css': 'bootswatch-dist/css/bootstrap.css',
                     'css/fullcalendar.css': 'fullcalendar/dist/fullcalendar.css',
                     'css/bootstrap-datetimepicker.css': 'eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css',
                     'css/spectrum.css': 'spectrum/spectrum.css',
@@ -32,7 +31,7 @@ module.exports = function (grunt) {
             },
             fonts: {
                 files: {
-                    'fonts': 'bootstrap/fonts'
+                    'fonts': 'bootswatch-dist/fonts'
                 }
             }
         },
