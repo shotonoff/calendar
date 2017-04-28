@@ -96,10 +96,9 @@
             };
             $scope.uiConfig = {
                 calendar: {
+                    selectable: true,
                     editable: true,
-                    header: {
-                        center: 'title',
-                    },
+                    eventDurationEditable: true,
                     eventClick: function (e) {
                         if ($scope.event.id == e.id) {
                             return;
