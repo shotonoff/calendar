@@ -59,6 +59,7 @@ return [
         $commandBus->register(CQRS\EventCreateCommand::class, $c->get(CQRS\EventService::class));
         $commandBus->register(CQRS\EventPartUpdateCommand::class, $c->get(CQRS\EventService::class));
         $commandBus->register(CQRS\EventDeleteCommand::class, $c->get(CQRS\EventService::class));
+        $commandBus->register(CQRS\ChangeStatusCommand::class, $c->get(CQRS\EventService::class));
         $commandBus->register(CQRS\InviteCreateCommand::class, $c->get(CQRS\InviteService::class));
 
         return $commandBus;

@@ -2,14 +2,11 @@
 
 namespace Aulinks\CQRS;
 
-use Aulinks\DTO\EventDTO;
 use Aulinks\Entity\Event;
 use Aulinks\Exception\ForbiddenException;
 use Aulinks\Hydrator\EventHydrator;
 use Aulinks\Repository\EventRepository;
 use Aulinks\Security\UserProvider;
-use JMS\Serializer\Serializer;
-use Slim\Http\RequestBody;
 
 /**
  * Class UserService
@@ -80,6 +77,14 @@ class EventService
         $this->failedIfNotOwner($event, $command->userId);
         $event->setDeleted(true);
         $this->repository->save($event);
+    }
+
+    /**
+     * @param ChangeStatusCommand $command
+     */
+    public function changeStatus(ChangeStatusCommand $command)
+    {
+        $this->repository->updateStatuses($command->date);
     }
 
     /**
